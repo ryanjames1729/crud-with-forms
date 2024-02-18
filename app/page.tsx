@@ -5,7 +5,7 @@ import Footer from "./components/Footer";
 import { useState } from "react";
 //import { getNames } from "./api/route";
 import { GraphQLClient } from 'graphql-request';
-import { getNames } from "./components/Results";
+import { getNames, postName } from "./components/Results";
 
 
 export default function Home() {
@@ -22,6 +22,7 @@ export default function Home() {
 
   //const usernames = getNames()
   const [usernames, setUsernames] = useState([])
+  const [postUpdate, setPostUpdate] = useState('')
   const [readName, setReadName] = useState('')
 
   const [createName, setCreateName] = useState('')
@@ -39,7 +40,7 @@ export default function Home() {
          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla quam velit, vulputate eu pharetra nec, mattis ac neque. Duis vulputate commodo lectus, ac blandit elit tincidunt id. Sed rhoncus, tortor sed eleifend tristique, tortor mauris molestie elit, et luctus mi mauris vel elit. Donec ac metus nec justo ultricies congue. Donec mi orci, sollicitudin in lacinia ut, tincidunt sed enim. Sed et felis ut nunc porttitor mattis. Sed eu turpis libero. Nunc ultrices.
         </p>
         
-        <div className="flex flex-row items-center justify-center">
+        <div className="flex flex-row items-center justify-center mt-2">
 
         <label className="inline-flex items-center cursor-pointer">
           <input type="checkbox" className="sr-only peer" id="create" name="create" value="create" checked={create} onChange={() => {
@@ -86,6 +87,7 @@ export default function Home() {
             setUpdate(false)
             setDelete(false)
             setRead(true)
+            setPostUpdate('')
           }}/>
           <div className="relative w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
         <span className="ms-3 text-sm font-medium text-gray-900 dark:text-gray-300">Read</span>
@@ -96,12 +98,13 @@ export default function Home() {
           <form className="flex flex-col items-center justify-center" onSubmit={ (event) => {
             event.preventDefault()
             console.log(createName, createScore)
-          //   const names = getNames(createName) 
-          //   names.then((data: any) => {
-          //     setUsernames(data);
-          //     setCreateName('');
-          //     setCreateScore('');
-          // })
+            const names = postName(createName, createScore) 
+            names.then((data: any) => {
+              console.log(data)
+              setPostUpdate('Your post has been sent!');
+              setCreateName('');
+              setCreateScore('');
+          })
         }
           }>
             <label htmlFor="create" className="flex flex-col items-center justify-center">
@@ -153,16 +156,21 @@ export default function Home() {
           </form>
         )}
 
-            
-        {usernames.map((user: any) => {
-          return (
-            <div key={user.id} className="flex flex-col items-center justify-center">
-              <span className="text-2xl font-bold text-center lg:text-4xl">Usernames</span>
+        
+        {usernames.length > 0 ? 
+          <div className="flex flex-col items-center justify-center">
+            <span className="text-2xl font-bold text-center lg:text-4xl">Usernames</span>
+            {usernames.map((user: any) => {
+            return (
+            <div key={user.id} className="mt-2 p-2 min-w-full border-solid rounded-md border-white border-2 flex flex-col items-center justify-center">
               <p>{user.name}</p>
               <p>{user.points}</p>
             </div>
-          )
-        })}
+            )})}
+            </div> : void 0
+        }      
+
+        {postUpdate.length > 0 ? <p>{postUpdate}</p> : null}
         
         
         
