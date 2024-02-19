@@ -5,7 +5,7 @@ import Footer from "./components/Footer";
 import { useState } from "react";
 //import { getNames } from "./api/route";
 import { GraphQLClient } from 'graphql-request';
-import { getNames, postName } from "./components/Results";
+import { getNames, postName, mutateName } from "./components/Results";
 
 
 export default function Home() {
@@ -27,6 +27,9 @@ export default function Home() {
 
   const [createName, setCreateName] = useState('')
   const [createScore, setCreateScore] = useState('')
+
+  const [updateName, setUpdateName] = useState('')
+  const [updateScore, setUpdateScore] = useState('')
 
 
   return (
@@ -117,11 +120,20 @@ export default function Home() {
         )}
 
         { update && (
-          <form className="flex flex-col items-center justify-center">
+          <form className="flex flex-col items-center justify-center" onSubmit={ (event) => {
+            event.preventDefault()
+            console.log(updateName, updateScore)
+            const names = mutateName(updateName, updateScore)
+            names.then((data: any) => {
+              console.log(data)
+              setPostUpdate('Your update has been sent!');
+              setUpdateName('');
+              setUpdateScore('');
+          })}}>
             <label htmlFor="create" className="flex flex-col items-center justify-center">
               <span className="text-2xl font-bold text-center lg:text-4xl">Update</span>
-              <input type="text" name="updateName" id="updateName" placeholder="Update Name goes here" className="w-96 h-12 p-4 mt-4 border border-gray-300 rounded-lg dark:border-gray-700 text-slate-700"/>
-              <input type="text" name="updateScore" id="updateScore" placeholder="Update Score goes here" className="w-96 h-12 p-4 mt-4 border border-gray-300 rounded-lg dark:border-gray-700 text-slate-700"/>
+              <input type="text" name="updateName" id="updateName" placeholder="Update Name goes here" className="w-96 h-12 p-4 mt-4 border border-gray-300 rounded-lg dark:border-gray-700 text-slate-700" value={updateName} onChange={e => {setUpdateName(e.target.value)}}/>
+              <input type="text" name="updateScore" id="updateScore" placeholder="Update Score goes here" className="w-96 h-12 p-4 mt-4 border border-gray-300 rounded-lg dark:border-gray-700 text-slate-700" value={updateScore} onChange={e => {setUpdateScore(e.target.value)}}/>
               <button type="submit" className="w-96 h-12 mt-4 bg-blue-500 rounded-lg text-white">Update</button>
             </label>
           </form>
