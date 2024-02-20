@@ -182,7 +182,7 @@ export default function Home() {
         )}
 
         {/* Messaging for user will be displayed using the state variables postUpdate and usernames. */}
-        {usernames.length > 0 ? 
+        {usernames && usernames.length > 0 ? 
           <div className="flex flex-col items-center justify-center">
             <span className="text-2xl font-bold text-center lg:text-4xl">Usernames</span>
             {usernames.map((user: any) => {
@@ -195,7 +195,7 @@ export default function Home() {
             </div> : void 0
         }      
 
-        {postUpdate.length > 0 ? <p>{postUpdate}</p> : null}
+        {postUpdate && postUpdate.length > 0 ? <p>{postUpdate}</p> : null}
         
         
         
