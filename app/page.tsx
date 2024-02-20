@@ -1,11 +1,8 @@
 'use client'
 
-import Image from "next/image";
 import Footer from "./components/Footer";
 import { useState } from "react";
-//import { getNames } from "./api/route";
-import { GraphQLClient } from 'graphql-request';
-import { getNames, postName, mutateName } from "./components/Results";
+import { getNames, postName, mutateName, deleteName } from "./components/Results";
 
 
 export default function Home() {
@@ -20,7 +17,7 @@ export default function Home() {
   const [del, setDelete] = useState(false);  // use del instead of delete
   const [read, setRead] = useState(true);
 
-  //const usernames = getNames()
+  // these variables are used to store the form data from the user and then send to the API.
   const [usernames, setUsernames] = useState([])
   const [postUpdate, setPostUpdate] = useState('')
   const [readName, setReadName] = useState('')
@@ -31,6 +28,11 @@ export default function Home() {
   const [updateName, setUpdateName] = useState('')
   const [updateScore, setUpdateScore] = useState('')
 
+  const [delName, setDelName] = useState('')
+  // end of variables used for taking form data from the user
+
+  
+
 
   return (
     <>
@@ -40,7 +42,9 @@ export default function Home() {
           Welcome to the CRUD App
         </h1>
         <p className="fixed left-0 top-0 flex w-full justify-center border-b border-gray-300 bg-gradient-to-b from-zinc-200 pb-6 pt-8 backdrop-blur-2xl dark:border-neutral-800 dark:bg-zinc-800/30 dark:from-inherit lg:static lg:w-auto  lg:rounded-xl lg:border lg:bg-gray-200 lg:p-4 lg:dark:bg-zinc-800/30">
-         Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla quam velit, vulputate eu pharetra nec, mattis ac neque. Duis vulputate commodo lectus, ac blandit elit tincidunt id. Sed rhoncus, tortor sed eleifend tristique, tortor mauris molestie elit, et luctus mi mauris vel elit. Donec ac metus nec justo ultricies congue. Donec mi orci, sollicitudin in lacinia ut, tincidunt sed enim. Sed et felis ut nunc porttitor mattis. Sed eu turpis libero. Nunc ultrices.
+         As a CS teacher, one of my achievements is to teach students how to manage data correctly using Create, Read, Update, and Delete (CRUD) operations. This app is a simple demonstration of how to use CRUD operations in a web application.
+         But, for me as a web developer, these are operations that I set up at the beginning of a project and don't think about again until I need to add a new feature.
+         So, I decided I need to create this sandbox app to play around with these operations so that I can get better at building them in the NextJS 14 App Router wtih GraphQl Queries and Mutations.
         </p>
         
         <div className="flex flex-row items-center justify-center mt-2">
@@ -130,7 +134,7 @@ export default function Home() {
               setUpdateName('');
               setUpdateScore('');
           })}}>
-            <label htmlFor="create" className="flex flex-col items-center justify-center">
+            <label htmlFor="update" className="flex flex-col items-center justify-center">
               <span className="text-2xl font-bold text-center lg:text-4xl">Update</span>
               <input type="text" name="updateName" id="updateName" placeholder="Update Name goes here" className="w-96 h-12 p-4 mt-4 border border-gray-300 rounded-lg dark:border-gray-700 text-slate-700" value={updateName} onChange={e => {setUpdateName(e.target.value)}}/>
               <input type="text" name="updateScore" id="updateScore" placeholder="Update Score goes here" className="w-96 h-12 p-4 mt-4 border border-gray-300 rounded-lg dark:border-gray-700 text-slate-700" value={updateScore} onChange={e => {setUpdateScore(e.target.value)}}/>
@@ -140,10 +144,19 @@ export default function Home() {
         )}
 
         { del && (
-          <form className="flex flex-col items-center justify-center">
-            <label htmlFor="create" className="flex flex-col items-center justify-center">
+          <form className="flex flex-col items-center justify-center" onSubmit={(event) => {
+            event.preventDefault()
+            console.log(delName)
+            const names = deleteName(delName)
+            names.then((data: any) => {
+              console.log('data', data)
+              setPostUpdate('Your delete has been sent!');
+              setDelName('');
+          })
+          }}>
+            <label htmlFor="delete" className="flex flex-col items-center justify-center">
               <span className="text-2xl font-bold text-center lg:text-4xl">Delete</span>
-              <input type="text" name="deleteName" id="deleteName" placeholder="Delete Name goes here" className="w-96 h-12 p-4 mt-4 border border-gray-300 rounded-lg dark:border-gray-700"/>
+              <input type="text" name="deleteName" id="deleteName" placeholder="Delete Name goes here" className="text-slate-700 w-96 h-12 p-4 mt-4 border border-gray-300 rounded-lg dark:border-gray-700" value={delName} onChange={e => {setDelName(e.target.value)}}/>
               <span className="w-96 h-12 p-4 mt-4"></span>
               <button type="submit" className="w-96 h-12 mt-4 bg-blue-500 rounded-lg text-white">Delete</button>
             </label>
@@ -159,7 +172,7 @@ export default function Home() {
                 setReadName('');
               });
             }}>
-            <label htmlFor="create" className="flex flex-col items-center justify-center">
+            <label htmlFor="read" className="flex flex-col items-center justify-center">
               <span className="text-2xl font-bold text-center lg:text-4xl">Read</span>
               <input type="text" name="readName" id="readName" placeholder="Read Name goes here" className="w-96 h-12 p-4 mt-4 border border-gray-300 rounded-lg dark:border-gray-700 text-slate-700" value={readName} onChange={e => setReadName(e.target.value)}/>
               <span className="w-96 h-12 p-4 mt-4"></span>
@@ -168,7 +181,7 @@ export default function Home() {
           </form>
         )}
 
-        
+        {/* Messaging for user will be displayed using the state variables postUpdate and usernames. */}
         {usernames.length > 0 ? 
           <div className="flex flex-col items-center justify-center">
             <span className="text-2xl font-bold text-center lg:text-4xl">Usernames</span>
