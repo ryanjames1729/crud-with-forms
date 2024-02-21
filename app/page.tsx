@@ -2,8 +2,9 @@
 
 import Footer from "./components/Footer";
 import { useState } from "react";
-import { getNames, postName, mutateName, deleteName } from "./components/Results";
+import { getNames, postName, mutateName, deleteName } from "./api/route";
 
+import { use } from "react";
 
 export default function Home() {
 
