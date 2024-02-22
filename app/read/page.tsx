@@ -1,6 +1,6 @@
 import CreateForm from '../components/CreateForm';
 
-export default function Page(names: any) {
+export default function Page( {names}: any) {
 
     return (
         <div>

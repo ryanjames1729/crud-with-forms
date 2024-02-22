@@ -2,22 +2,32 @@
 import React, { Suspense, useState } from 'react';
 
 import { getNames } from '../actions';
-import { redirect } from 'next/navigation';
+import { useRouter, redirect } from 'next/navigation';
 
 export default function CreateForm () {
     
     const [readName, setReadName] = useState('');
     const [usernames, setUsernames] = useState([]);
+    const router = useRouter();
 
     return (
       <>
         <form className="flex flex-col items-center justify-center" 
         onSubmit={async (event) => {
             event.preventDefault()
-            const names = getNames(readName) // pass in form data as parameter
-            names.then((data: any) => {
-              redirect('/read', data);
-            });
+            try {
+              const names = getNames(readName) // pass in form data as parameter
+              names.then((data: any) => {
+                setUsernames(data);
+              });
+            }
+            catch {
+              console.log("Error in reading names");
+            }
+            finally {
+              router.push('/read')
+            }
+            
             
           }}
           >
