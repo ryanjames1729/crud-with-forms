@@ -3,7 +3,7 @@ import React, { Suspense, useState } from 'react';
 
 import { getNames } from '../actions';
 
-export default function CreateForm () {
+export default function CreateForm ( { getNames }: any ) {
     
     const [readName, setReadName] = useState('');
     const [usernames, setUsernames] = useState([]);
