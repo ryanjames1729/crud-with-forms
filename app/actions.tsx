@@ -1,6 +1,7 @@
 'use server';
 
 import { GraphQLClient } from "graphql-request";
+import { redirect } from "next/navigation";
 
 export async function getNames(name: string) {
   const endpoint = process.env.GRAPHQL_PUBLIC_ENDPOINT;

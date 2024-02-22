@@ -3,6 +3,7 @@
 import Footer from "./components/Footer";
 import { useState } from "react";
 import { getNames, postName, mutateName, deleteName } from "./actions";
+import { redirect } from "next/navigation";
 
 import { GraphQLClient } from "graphql-request";
 
@@ -163,13 +164,14 @@ export default function Home() {
         )}
 
         { read && (
-            <form className="flex flex-col items-center justify-center" onSubmit={(event) => {
+            <form className="flex flex-col items-center justify-center" onSubmit={async (event) => {
               event.preventDefault()
               const names = getNames(readName) // pass in form data as parameter
-              names.then((data: any) => {
-                setUsernames(data);
-                setReadName('');
-              });
+              // names.then((data: any) => {
+              //   setUsernames(data);
+              //   setReadName('');
+              // });
+              setUsernames(await names);
             }}>
             <label htmlFor="read" className="flex flex-col items-center justify-center">
               <span className="text-2xl font-bold text-center lg:text-4xl">Read</span>
