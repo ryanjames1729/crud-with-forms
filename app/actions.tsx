@@ -9,18 +9,24 @@ export async function getNames(name: string) {
   
   const searchname = name ? name : "";
   console.log("name", searchname)
- 
-  const { usernames }: any = await graphQLClient.request(`
-  query Usernames($searchname: String!) {
-    usernames(where: {name_contains: $searchname}) {
-      id
-      name
-      points
+  
+  try{
+    const { usernames }: any = await graphQLClient.request(`
+    query Usernames($searchname: String!) {
+      usernames(where: {name_contains: $searchname}) {
+        id
+        name
+        points
+      }
     }
+    `, { searchname }); // variables must be part of the request arguments!
+    console.log(usernames);
+    return usernames;
   }
-  `, { searchname }); // variables must be part of the request arguments!
-  console.log(usernames);
-  return usernames;
+  catch (e) {
+    console.error(e);
+    return [];
+  }
 }
 
 export async function postName(name: string, points: string) {
