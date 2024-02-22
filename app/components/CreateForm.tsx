@@ -2,6 +2,7 @@
 import React, { Suspense, useState } from 'react';
 
 import { getNames } from '../actions';
+import { redirect } from 'next/navigation';
 
 export default function CreateForm () {
     
@@ -14,11 +15,10 @@ export default function CreateForm () {
         onSubmit={async (event) => {
             event.preventDefault()
             const names = getNames(readName) // pass in form data as parameter
-            // names.then((data: any) => {
-            //   setUsernames(data);
-            //   setReadName('');
-            // });
-            setUsernames(await names);
+            names.then((data: any) => {
+              redirect('/read', data);
+            });
+            
           }}
           >
           <label htmlFor="read" className="flex flex-col items-center justify-center">
