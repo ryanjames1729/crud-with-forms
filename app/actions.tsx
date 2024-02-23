@@ -1,7 +1,9 @@
 'use server';
 
 import { GraphQLClient } from "graphql-request";
+import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
+
 
 export async function getNames(name: string) {
   const endpoint = process.env.GRAPHQL_PUBLIC_ENDPOINT;
@@ -29,9 +31,17 @@ export async function getNames(name: string) {
   }
 }
 
-export async function postName(name: string, points: string) {
+export async function postName(
+  prevState: {
+    message: string;
+  },
+  formData: FormData,
+) {
   const endpoint = process.env.GRAPHQL_PUBLIC_ENDPOINT;
   const token = process.env.GRAPHQL_TOKEN;
+
+  const points = "0";
+  const name = formData.get("createName") as string;
 
   const graphQLClient = new GraphQLClient(endpoint || "", {
     headers: {
@@ -60,7 +70,8 @@ export async function postName(name: string, points: string) {
     }
     `, { id }); // variables must be part of the request arguments!
   console.log(createUsername);
-  return createUsername;
+  revalidatePath('/read')
+  return {message: "Name created!"};
 }
 
 export async function mutateName(name: string, points: string) {

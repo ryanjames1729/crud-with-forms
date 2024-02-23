@@ -105,13 +105,13 @@ export default function Home() {
           <form className="flex flex-col items-center justify-center" onSubmit={ (event) => {
             event.preventDefault()
             console.log(createName, createScore)
-            const names = postName(createName, createScore) 
-            names.then((data: any) => {
-              console.log(data)
-              setPostUpdate('Your post has been sent!');
-              setCreateName('');
-              setCreateScore('');
-          })
+          //   const names = postName(createName, createScore) 
+          //   names.then((data: any) => {
+          //     console.log(data)
+          //     setPostUpdate('Your post has been sent!');
+          //     setCreateName('');
+          //     setCreateScore('');
+          // })
         }
           }>
             <label htmlFor="create" className="flex flex-col items-center justify-center">
