@@ -70,7 +70,7 @@ export async function postName(
     }
     `, { id }); // variables must be part of the request arguments!
   console.log(createUsername);
-  revalidatePath('https://crud-with-forms.vercel.app/read')
+  revalidatePath('read')
   return {message: "Name created!"};
 }
 

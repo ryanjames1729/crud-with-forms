@@ -5,7 +5,7 @@ import AddForm from './add-form';
 export default async function Page() {
 
     const endpoint = process.env.GRAPHQL_PUBLIC_ENDPOINT;
-    const graphQLClient = new GraphQLClient(endpoint || '');
+    const graphQLClient = new GraphQLClient(endpoint);
     
     // declare data as a type array of objects
     
