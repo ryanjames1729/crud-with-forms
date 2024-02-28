@@ -4,7 +4,8 @@ import AddForm from './add-form';
 
 export default async function Page() {
 
-    const endpoint = process.env.GRAPHQL_PUBLIC_ENDPOINT;
+    //const endpoint = process.env.GRAPHQL_PUBLIC_ENDPOINT;
+    const endpoint = 'https://api-us-east-1-shared-usea1-02.hygraph.com/v2/clsnkcosn0v9001w60dp36wv4/master';
     const graphQLClient = new GraphQLClient(endpoint);
     
     // declare data as a type array of objects
