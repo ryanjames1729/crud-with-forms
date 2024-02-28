@@ -70,8 +70,7 @@ export async function postName(
     }
     `, { id }); // variables must be part of the request arguments!
   console.log(createUsername);
-  revalidatePath('read')
-  return {message: "Name created!"};
+  return createUsername;
 }
 
 export async function mutateName(name: string, points: string) {
