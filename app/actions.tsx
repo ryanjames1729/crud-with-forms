@@ -7,7 +7,7 @@ import { redirect } from "next/navigation";
 
 export async function getNames(name: string) {
   //const endpoint = 'https://api-us-east-1-shared-usea1-02.hygraph.com/v2/clsnkcosn0v9001w60dp36wv4/master';
-  const endpoint = process.env.GRAPHQL_PUBLIC_ENDPOINT;
+  const endpoint = process.env.GRAPHQL_PUBLIC_ENDPOINT ? process.env.GRAPHQL_PUBLIC_ENDPOINT : '';
   const graphQLClient = new GraphQLClient(endpoint);
   
   const searchname = name ? name : "";
