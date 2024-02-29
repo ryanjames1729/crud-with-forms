@@ -107,13 +107,6 @@ export default function Home() {
             const msg = postName(createName, createScore)
             console.log(createName, createScore)
             setPostUpdate(await msg ? 'Your post has been sent!' : 'Your post has not been sent!');
-          //   const names = postName(createName, createScore) 
-          //   names.then((data: any) => {
-          //     console.log(data)
-          //     setPostUpdate('Your post has been sent!');
-          //     setCreateName('');
-          //     setCreateScore('');
-          // })
         }
           }>
             <label htmlFor="create" className="flex flex-col items-center justify-center">
@@ -126,16 +119,14 @@ export default function Home() {
         )}
 
         { update && (
-          <form className="flex flex-col items-center justify-center" onSubmit={ (event) => {
+          <form className="flex flex-col items-center justify-center" onSubmit={ async (event) => {
             event.preventDefault()
-            console.log(updateName, updateScore)
             const names = mutateName(updateName, updateScore)
-            names.then((data: any) => {
-              console.log(data)
-              setPostUpdate('Your update has been sent!');
-              setUpdateName('');
-              setUpdateScore('');
-          })}}>
+            console.log(updateName, updateScore)
+            setPostUpdate(await names ? 'Your update has been sent!' : 'Your update has not been sent!');
+            setUpdateName('');
+            setUpdateScore('');
+          }}>
             <label htmlFor="update" className="flex flex-col items-center justify-center">
               <span className="text-2xl font-bold text-center lg:text-4xl">Update</span>
               <input type="text" name="updateName" id="updateName" placeholder="Update Name goes here" className="w-96 h-12 p-4 mt-4 border border-gray-300 rounded-lg dark:border-gray-700 text-slate-700" value={updateName} onChange={e => {setUpdateName(e.target.value)}}/>
