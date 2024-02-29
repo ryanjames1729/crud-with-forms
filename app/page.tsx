@@ -102,9 +102,11 @@ export default function Home() {
         </div>
 
         { create && (
-          <form className="flex flex-col items-center justify-center" onSubmit={ (event) => {
+          <form className="flex flex-col items-center justify-center" onSubmit={ async (event) => {
             event.preventDefault()
+            const msg = postName(createName, createScore)
             console.log(createName, createScore)
+            setPostUpdate(await msg ? 'Your post has been sent!' : 'Your post has not been sent!');
           //   const names = postName(createName, createScore) 
           //   names.then((data: any) => {
           //     console.log(data)

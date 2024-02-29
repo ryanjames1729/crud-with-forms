@@ -31,25 +31,21 @@ export async function getNames(name: string) {
   }
 }
 
-export async function postName(
-  prevState: {
-    message: string;
-  },
-  formData: FormData,
-) {
+export async function postName(nameIn: string, pointsIn: string) {
   const endpoint = process.env.GRAPHQL_PUBLIC_ENDPOINT ? process.env.GRAPHQL_PUBLIC_ENDPOINT : '';
   const token = process.env.GRAPHQL_TOKEN ? process.env.GRAPHQL_TOKEN : '';
 
-  const points = "0";
-  const name = formData.get("createName") as string;
+  const points = pointsIn ? pointsIn : "0";
+  const name = nameIn ? nameIn : "No Name";
 
-  const graphQLClient = new GraphQLClient(endpoint || "", {
+  const graphQLClient = new GraphQLClient(endpoint, {
     headers: {
       authorization: `Bearer ${token}`,
     }
   });
  
-  const { createUsername }: any = await graphQLClient.request(`
+  try {
+    const { createUsername }: any = await graphQLClient.request(`
   mutation CreateUsername($name: String!, $points: String!) {
     createUsername(data: {name: $name, points: $points}) {
       id
@@ -71,6 +67,12 @@ export async function postName(
     `, { id }); // variables must be part of the request arguments!
   console.log(createUsername);
   return createUsername;
+  }
+  catch (e) {
+    console.error(e);
+    return [];
+  }
+  
 }
 
 export async function mutateName(name: string, points: string) {
