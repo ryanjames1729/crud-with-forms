@@ -159,11 +159,7 @@ export default function Home() {
         { read && (
             <form className="flex flex-col items-center justify-center" onSubmit={async (event) => {
               event.preventDefault()
-              const names = getNames(readName) // pass in form data as parameter
-              // names.then((data: any) => {
-              //   setUsernames(data);
-              //   setReadName('');
-              // });
+              const names = getNames(readName) 
               setUsernames(await names);
             }}>
             <label htmlFor="read" className="flex flex-col items-center justify-center">
